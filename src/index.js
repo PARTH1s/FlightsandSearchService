@@ -2,7 +2,7 @@ const express=require('express')
 
 const bodyParser=require('body-parser')
 
-const {PORT}=require('./conifg/serverConfig')
+const {PORT}=require('./config/serverConfig')
 
 const SetUpandStartServer=async()=>{
     // create the express object 
