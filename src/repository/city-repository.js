@@ -1,3 +1,4 @@
+const { where, Op } = require('sequelize');
 const { City } = require('../models/index');
 
 class CityRepository {
@@ -61,15 +62,37 @@ class CityRepository {
         }
     }
 
-    async getAllCities() {
-        try {
-            const cities = await City.findAll();
-            return cities;
-        } catch (error) {
-            console.log("Error in getting all cities:", error);
-            throw { error };
+    // async getAllCities() {
+    //     try {
+    //         const cities = await City.findAll();
+    //         return cities;
+    //     } catch (error) {
+    //         console.log("Error in getting all cities:", error);
+    //         throw { error };
+    //     }
+    // }
+    async getAllCities(filter) {
+    try {
+        let cities;
+
+        if (filter && filter.name) {
+            cities = await City.findAll({
+                where: {
+                    name: {
+                        [Op.startsWith]: filter.name
+                    }
+                }
+            });
+        } else {
+            cities = await City.findAll();
         }
+
+        return cities;
+    } catch (error) {
+        console.log("Error in getting all cities:", error);
+        throw { error };
     }
+}
 }
 
 module.exports = CityRepository;
