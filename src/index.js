@@ -1,28 +1,28 @@
-const express=require('express')
+const express = require("express");
 
-const bodyParser=require('body-parser')
+const bodyParser = require("body-parser");
 
-const {PORT}=require('./config/serverConfig'); 
- 
-const ApiRoutes = require('./routes/index');
+const { PORT } = require("./config/serverConfig");
 
-const db = require('./models/index');
+const ApiRoutes = require("./routes/index");
 
-const SetUpandStartServer=async()=>{
-    // create the express object 
-    const app = express(); 
+const db = require("./models/index");
 
-    app.use(bodyParser.json());
-    app.use(bodyParser.urlencoded({extended:true}));
+const SetUpandStartServer = async () => {
+  // create the express object
+  const app = express();
 
-    app.use('/api',ApiRoutes);
+  app.use(bodyParser.json());
+  app.use(bodyParser.urlencoded({ extended: true }));
 
-    app.listen(PORT,async ()=>{
-        console.log(`Server Started at ${PORT}`);  
-        if (process.env.SYNC_DB){
-            db.sequelize.sync({alter:true});
-        }
-    })
-}
+  app.use("/api", ApiRoutes);
 
-SetUpandStartServer()
+  app.listen(PORT, async () => {
+    console.log(`Server Started at ${PORT}`);
+    if (process.env.SYNC_DB) {
+      db.sequelize.sync({ alter: true });
+    }
+  });
+};
+
+SetUpandStartServer();
