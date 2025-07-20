@@ -1,8 +1,20 @@
 const express = require('express');
 const CityController = require('../../controllers/city-controller')
 const AirportController = require('../../controllers/airport-controller');
+const AirplaneController = require('../../controllers/airport-controller');
 
 const router = express.Router();
+/**
+ * @swagger
+ * tags:
+ *   - name: City
+ *     description: City management APIs
+ *   - name: Airport
+ *     description: Airport management APIs
+ *   - name: Airplane
+ *     description: Airplane management APIs
+ */
+router.post('/city', CityController.create);
 
 router.post('/city', CityController.create);
 router.delete('/city/:id', CityController.destroy);
