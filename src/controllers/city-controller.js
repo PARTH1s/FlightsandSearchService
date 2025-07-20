@@ -67,29 +67,39 @@ const get = async (req, res) => {
 
 // Update a city
 const update = async (req, res) => {
-    try {
-        const updatedCity = await cityService.updateCity(req.params.id, req.body);
-        return res.status(200).json({
-            data: updatedCity,
-            success: true,
-            message: 'Successfully updated the city.',
-            err: {}
-        });
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({
-            data: {},
-            success: false,
-            message: 'Not able to update the city.',
-            err: error
-        });
-    }
+    try {
+        const updatedCity = await cityService.updateCity(req.params.id, req.body);
+
+        if (!updatedCity) {
+            return res.status(404).json({
+                data: {},
+                success: false,
+                message: 'City not found or no changes applied.',
+                err: {}
+            });
+        }
+
+        return res.status(200).json({
+            data: updatedCity,
+            success: true,
+            message: 'Successfully updated the city.',
+            err: {}
+        });
+    } catch (error) {
+        return res.status(500).json({
+            data: {},
+            success: false,
+            message: 'Not able to update the city.',
+            err: error
+        });
+    }
 };
+
 
 // Get all cities
 const getall = async (req, res) => {
     try {
-        const cities = await cityService.getAllCities();
+        const cities = await cityService.getallCities();
         return res.status(200).json({
             data: cities,
             success: true,

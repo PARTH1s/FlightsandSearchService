@@ -1,7 +1,7 @@
-const {CityRepository} = require('../repository/index');
+const { CityRepository } = require('../repository/index');
 
 class CityService {
-    constructor(){
+    constructor() {
         this.CityRepository = new CityRepository();
     }
 
@@ -10,28 +10,28 @@ class CityService {
             const city = await this.CityRepository.createCity(data);
             return city;
         } catch (error) {
-            console.log("Something went wrong in service layer",error)
-            throw {error};
+            console.log("Something went wrong in service layer", error)
+            throw { error };
         }
     }
 
-    async updateCity(cityId,data) {
+    async updateCity(cityId, data) {
         try {
-            const city = await this.CityRepository.updateCity(cityId,data);
+            const city = await this.CityRepository.updateCity(cityId, data);
             return city;
         } catch (error) {
-            console.log("Something went wrong in service layer",error)
-            throw {error};
+            throw { error };
         }
     }
+
 
     async deleteCity(cityId) {
         try {
             const city = await this.CityRepository.deleteCity(cityId);
             return city;
         } catch (error) {
-            console.log("Something went wrong in service layer",error)
-            throw {error};
+            console.log("Something went wrong in service layer", error)
+            throw { error };
         }
     }
 
@@ -40,8 +40,8 @@ class CityService {
             const city = await this.CityRepository.getCity(cityId);
             return city;
         } catch (error) {
-            console.log("Something went wrong in service layer",error)
-            throw {error};
+            console.log("Something went wrong in service layer", error)
+            throw { error };
         }
     }
 
@@ -50,8 +50,8 @@ class CityService {
             const city = await this.CityRepository.getAllCities();
             return city;
         } catch (error) {
-            console.log("Something went wrong in service layer",error)
-            throw {error};
+            console.log("Something went wrong in service layer", error)
+            throw { error };
         }
     }
 }

@@ -28,17 +28,21 @@ class CityRepository {
 
     async updateCity(cityId, data) {
         try {
-            const city = await City.update(data, {
-                where: {
-                    id: cityId
-                }
-            })
-            return city;
+            const [updatedCount] = await City.update(data, {
+                where: { id: cityId }
+            });
+
+            if (updatedCount === 0) {
+                return null;
+            }
+
+            const updatedCity = await City.findByPk(cityId);
+            return updatedCity;
         } catch (error) {
-            console.log("Error in deleting city", error);
             throw { error };
         }
     }
+
 
     async getCity(cityId) {
         try {
