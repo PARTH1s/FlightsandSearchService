@@ -1,3 +1,5 @@
+const { SuccessCodes,ServerErrorCodes  } = require("../utils/error-codes")
+
 const FlightService = require('../services/flight-service');
 
 const flightService = new FlightService();
@@ -5,7 +7,7 @@ const flightService = new FlightService();
 const create = async (req, res) => {
     try {
         const flight = await flightService.createFlight(req.body);
-        return res.status(201).json({
+        return res.status(SuccessCodes.CREATED).json({
             data: flight,
             success: true,
             message: 'Successfully created a flight.',
@@ -13,7 +15,7 @@ const create = async (req, res) => {
         });
     } catch (error) {
         console.error('Flight creation error:', error);
-        return res.status(500).json({
+        return res.status(ServerErrorCodes.INTERNAL_SERVER_ERROR).json({
             data: {},
             success: false,
             message: 'Not able to create a flight.',
@@ -26,7 +28,7 @@ const create = async (req, res) => {
 const get = async (req, res) => {
     try {
         const flight = await flightService.getFlight(req.params.id);
-        return res.status(200).json({
+        return res.status(SuccessCodes.OK).json({
             data: flight,
             success: true,
             message: 'Successfully fetched the flight.',
@@ -34,7 +36,7 @@ const get = async (req, res) => {
         });
     } catch (error) {
         console.log(error);
-        return res.status(500).json({
+        return res.status(ServerErrorCodes.INTERNAL_SERVER_ERROR).json({
             data: {},
             success: false,
             message: 'Not able to fetch the flight.',
@@ -47,7 +49,7 @@ const get = async (req, res) => {
 const getall = async (req, res) => {
     try {
         const flights = await flightService.getAllFlights(req.query);
-        return res.status(200).json({
+        return res.status(SuccessCodes.OK).json({
             data: flights,
             success: true,
             message: 'Successfully fetched all flights.',
@@ -55,7 +57,7 @@ const getall = async (req, res) => {
         });
     } catch (error) {
         console.log(error);
-        return res.status(500).json({
+        return res.status(ServerErrorCodes.INTERNAL_SERVER_ERROR).json({
             data: {},
             success: false,
             message: 'Not able to fetch flights.',
