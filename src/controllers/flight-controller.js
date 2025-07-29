@@ -1,4 +1,4 @@
-const { SuccessCodes,ServerErrorCodes  } = require("../utils/error-codes")
+const { SuccessCodes, ServerErrorCodes } = require("../utils/error-codes")
 
 const FlightService = require('../services/flight-service');
 
@@ -66,5 +66,28 @@ const getall = async (req, res) => {
     }
 };
 
+const update = async (req, res) => {
+    try {
+        const flightId = req.params.id;
+        const updatedFlight = await flightService.updateFlight(flightId, req.body);
 
-module.exports = { create, get,getall };
+        return res.status(SuccessCodes.OK).json({
+            data: updatedFlight,
+            success: true,
+            message: 'Successfully updated the flight.',
+            err: {}
+        });
+    } catch (error) {
+        console.error('Flight update error:', error);
+        return res.status(ServerErrorCodes.INTERNAL_SERVER_ERROR).json({
+            data: {},
+            success: false,
+            message: 'Not able to update the flight.',
+            err: error
+        });
+    }
+};
+
+
+
+module.exports = { create, get, getall, update };

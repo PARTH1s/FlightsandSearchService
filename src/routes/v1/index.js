@@ -40,6 +40,7 @@ router.get("/airplane", AirplaneController.getAll);
 router.post('/flights', FlightMiddlewares.validatecreateFlight, FlightController.create);
 router.get("/flights/:id", FlightController.get);
 router.get("/flights", FlightController.getall);
+router.patch("/flights/:id", FlightController.update);
 
 
 module.exports = router;

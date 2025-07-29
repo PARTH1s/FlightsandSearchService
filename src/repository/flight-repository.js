@@ -19,12 +19,12 @@ class FlightRepository {
             filter.price = { [Op.gte]: data.minPrice };
         }
 
-        if (data.maxPrice) {  
-        filter.price = {
-            ...filter.price,
-            [Op.lte]: data.maxPrice
-        };
-    }
+        if (data.maxPrice) {
+            filter.price = {
+                ...filter.price,
+                [Op.lte]: data.maxPrice
+            };
+        }
         return filter;
     }
 
@@ -38,44 +38,6 @@ class FlightRepository {
             throw { error };
         }
     }
-
-    //   async deleteCity(cityId) {
-    //     try {
-    //       await City.destroy({
-    //         where: {
-    //           id: cityId,
-    //         },
-    //       });
-    //       return true;
-    //     } catch (error) {
-    //       console.log("Error in deleting city", error);
-    //       throw { error };
-    //     }
-    //   }
-
-    //   async updateCity(cityId, data) {
-    //     try {
-    //       // This below approach works but will not return updated Object.
-    //       // If we are using pg then returning true can be used, else not
-    //       // const [updatedCount] = await City.update(data, {
-    //       //     where: { id: cityId }
-    //       // });
-
-    //       // if (updatedCount === 0) {
-    //       //     return null;
-    //       // }
-
-    //       // const updatedCity = await City.findByPk(cityId);
-    //       // return updatedCity;
-    //       // for getting updated data in mysql we use below approach
-    //       const city = await City.findByPk(cityId);
-    //       city.name = data.name;
-    //       await city.save();
-    //       return city;
-    //     } catch (error) {
-    //       throw { error };
-    //     }
-    //   }
 
     async getFlight(flightId) {
         try {
@@ -97,6 +59,26 @@ class FlightRepository {
         } catch (error) {
             console.log("Error in getting all flights:", error);
             throw { error };
+        }
+    }
+
+    async updateFlight(flightId, data) {
+        try {
+            // Flight.update returns [numberOfAffectedRows, ...]
+            const [updatedRows] = await Flight.update(data, {
+                where: {
+                    id: flightId
+                }
+            });
+
+            if (updatedRows === 0) {
+                throw new Error(`Flight with id ${flightId} not found or no changes applied.`);
+            }
+
+            return true;
+        } catch (error) {
+            console.error("Error updating flight:", error);
+            throw error;
         }
     }
 
