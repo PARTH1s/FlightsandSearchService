@@ -1,7 +1,7 @@
-const dotenv=require('dotenv')
+const dotenv = require('dotenv');
+dotenv.config();
 
-dotenv.config()
-
-module.exports={
-    PORT:process.env.PORT
-}
+// Export PORT from environment or default to 3000
+module.exports = {
+    PORT: process.env.PORT || 3000,
+};
