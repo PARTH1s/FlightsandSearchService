@@ -1,24 +1,42 @@
-const { ClientErrorCodes } = require("../utils/error-codes")
+const { ClientErrorCodes } = require("../utils/error-codes");
 
+/**
+ * Middleware to validate request body for creating a flight.
+ * Ensures all mandatory fields are present before proceeding.
+ */
+const validateCreateFlight = (req, res, next) => {
+  const {
+    flightNumber,
+    airplaneId,
+    departureAirportId,
+    arrivalAirportId,
+    arrivalTime,
+    departureTime,
+    price,
+  } = req.body;
 
-const validatecreateFlight = (req, res, next) => {
-    if (!req.body.flightNumber ||
-        !req.body.airplaneId ||
-        !req.body.departureAirportId ||
-        !req.body.arrivalAirportId ||
-        !req.body.arrivalTime ||
-        !req.body.departureTime ||
-        !req.body.price
-    ) {
-        return res.status(ClientErrorCodes.BAD_REQUEST).json({
-            data: {},
-            success: false,
-            message: 'Invalid reuqest body for create flight',
-            err: 'Missing mandatory properties to create a flight'
-        });
-    }
-    next();
-}
+  // Check for missing mandatory fields
+  if (
+    !flightNumber ||
+    !airplaneId ||
+    !departureAirportId ||
+    !arrivalAirportId ||
+    !arrivalTime ||
+    !departureTime ||
+    !price
+  ) {
+    return res.status(ClientErrorCodes.BAD_REQUEST).json({
+      data: {},
+      success: false,
+      message: "Invalid request body for create flight",
+      err: "Missing mandatory properties to create a flight",
+    });
+  }
+
+  // All validations passed, proceed to next middleware/controller
+  next();
+};
+
 module.exports = {
-    validatecreateFlight
-}
+  validateCreateFlight,
+};
