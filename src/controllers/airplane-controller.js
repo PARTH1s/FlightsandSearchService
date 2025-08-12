@@ -1,9 +1,11 @@
-const { SuccessCodes, ServerErrorCodes, ClientErrorCodes } = require("../utils/error-codes")
-
+const { SuccessCodes, ServerErrorCodes, ClientErrorCodes } = require("../utils/error-codes");
 const { AirplaneService } = require("../services");
 
 const airplaneService = new AirplaneService();
 
+/**
+ * Create a new airplane
+ */
 const create = async (req, res) => {
   try {
     const airplane = await airplaneService.createAirplane(req.body);
@@ -23,6 +25,9 @@ const create = async (req, res) => {
   }
 };
 
+/**
+ * Delete an airplane by ID
+ */
 const destroy = async (req, res) => {
   try {
     const result = await airplaneService.deleteAirplane(req.params.id);
@@ -42,6 +47,9 @@ const destroy = async (req, res) => {
   }
 };
 
+/**
+ * Update airplane details by ID
+ */
 const update = async (req, res) => {
   try {
     const airplane = await airplaneService.updateAirplane(req.params.id, req.body);
@@ -69,6 +77,9 @@ const update = async (req, res) => {
   }
 };
 
+/**
+ * Get airplane details by ID
+ */
 const get = async (req, res) => {
   try {
     const airplane = await airplaneService.getAirplane(req.params.id);
@@ -88,6 +99,9 @@ const get = async (req, res) => {
   }
 };
 
+/**
+ * Get all airplanes
+ */
 const getAll = async (req, res) => {
   try {
     const airplanes = await airplaneService.getAllAirplanes();
