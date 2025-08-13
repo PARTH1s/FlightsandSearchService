@@ -5,53 +5,53 @@ class AirplaneService {
     this.airplaneRepository = new AirplaneRepository();
   }
 
+  // Create a new airplane
   async createAirplane(data) {
     try {
-      const airplane = await this.airplaneRepository.createAirplane(data);
-      return airplane;
+      return await this.airplaneRepository.createAirplane(data);
     } catch (error) {
-      console.log("Something went wrong in service layer", error);
-      throw { error };
+      console.error("Error in AirplaneService.createAirplane:", error);
+      throw error;
     }
   }
 
+  // Update airplane details
   async updateAirplane(airplaneId, data) {
     try {
-      const updatedAirplane = await this.airplaneRepository.updateAirplane(airplaneId, data);
-      return updatedAirplane;
+      return await this.airplaneRepository.updateAirplane(airplaneId, data);
     } catch (error) {
-      console.log("Something went wrong in service layer", error);
-      throw { error };
+      console.error("Error in AirplaneService.updateAirplane:", error);
+      throw error;
     }
   }
 
+  // Delete an airplane
   async deleteAirplane(airplaneId) {
     try {
-      const response = await this.airplaneRepository.deleteAirplane(airplaneId);
-      return response;
+      return await this.airplaneRepository.deleteAirplane(airplaneId);
     } catch (error) {
-      console.log("Something went wrong in service layer", error);
-      throw { error };
+      console.error("Error in AirplaneService.deleteAirplane:", error);
+      throw error;
     }
   }
 
+  // Get airplane by ID
   async getAirplane(airplaneId) {
     try {
-      const airplane = await this.airplaneRepository.getAirplane(airplaneId);
-      return airplane;
+      return await this.airplaneRepository.getAirplane(airplaneId);
     } catch (error) {
-      console.log("Something went wrong in service layer", error);
-      throw { error };
+      console.error("Error in AirplaneService.getAirplane:", error);
+      throw error;
     }
   }
 
+  // Get all airplanes
   async getAllAirplanes() {
     try {
-      const airplanes = await this.airplaneRepository.getAllAirplanes();
-      return airplanes;
+      return await this.airplaneRepository.getAllAirplanes();
     } catch (error) {
-      console.log("Something went wrong in service layer", error);
-      throw { error };
+      console.error("Error in AirplaneService.getAllAirplanes:", error);
+      throw error;
     }
   }
 }
