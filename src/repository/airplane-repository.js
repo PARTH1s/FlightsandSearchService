@@ -1,26 +1,28 @@
 const { Airplane } = require("../models");
 
 class AirplaneRepository {
+  // Create a new airplane
   async createAirplane(data) {
     try {
-      const airplane = await Airplane.create(data);
-      return airplane;
+      return await Airplane.create(data);
     } catch (error) {
-      console.log("Error in creating airplane", error);
-      throw { error };
+      console.error("Error creating airplane:", error);
+      throw error;
     }
   }
 
+  // Delete airplane by ID
   async deleteAirplane(id) {
     try {
-      await Airplane.destroy({ where: { id } });
-      return true;
+      const deletedCount = await Airplane.destroy({ where: { id } });
+      return deletedCount > 0;
     } catch (error) {
-      console.log("Error in deleting airplane", error);
-      throw { error };
+      console.error("Error deleting airplane:", error);
+      throw error;
     }
   }
 
+  // Update airplane details
   async updateAirplane(id, data) {
     try {
       const airplane = await Airplane.findByPk(id);
@@ -32,26 +34,28 @@ class AirplaneRepository {
       await airplane.save();
       return airplane;
     } catch (error) {
-      console.log("Error in updating airplane", error);
-      throw { error };
+      console.error("Error updating airplane:", error);
+      throw error;
     }
   }
 
+  // Get airplane by ID
   async getAirplane(id) {
     try {
       return await Airplane.findByPk(id);
     } catch (error) {
-      console.log("Error in fetching airplane", error);
-      throw { error };
+      console.error("Error fetching airplane:", error);
+      throw error;
     }
   }
 
+  // Get all airplanes
   async getAllAirplanes() {
     try {
       return await Airplane.findAll();
     } catch (error) {
-      console.log("Error in fetching all airplanes", error);
-      throw { error };
+      console.error("Error fetching airplanes:", error);
+      throw error;
     }
   }
 }

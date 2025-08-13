@@ -1,100 +1,79 @@
-const { Op } = require('sequelize');
-const { Flight } = require('../models/index');
-
+const { Op } = require("sequelize");
+const { Flight } = require("../models");
 
 class FlightRepository {
+  // Build dynamic filter for flight queries
+  #createFilter(data) {
+    const filter = {};
 
-    #createFilter(data) {
-        let filter = {};
-
-        if (data.arrivalAirportId) {
-            filter.arrivalAirportId = data.arrivalAirportId;
-        }
-
-        if (data.departureAirportId) {
-            filter.departureAirportId = data.departureAirportId;
-        }
-
-        if (data.minPrice) {
-            filter.price = { [Op.gte]: data.minPrice };
-        }
-
-        if (data.maxPrice) {
-            filter.price = {
-                ...filter.price,
-                [Op.lte]: data.maxPrice
-            };
-        }
-        return filter;
+    if (data.arrivalAirportId) {
+      filter.arrivalAirportId = data.arrivalAirportId;
     }
 
-
-    async createFlight(data) {
-        try {
-            const flight = await Flight.create(data);
-            return flight;
-        } catch (error) {
-            console.log("Error in creating flight", error);
-            throw { error };
-        }
+    if (data.departureAirportId) {
+      filter.departureAirportId = data.departureAirportId;
     }
 
-    async getFlight(flightId) {
-        try {
-            const flight = await Flight.findByPk(flightId);
-            return flight;
-        } catch (error) {
-            console.log("Error in getting Flight", error);
-            throw { error };
-        }
+    if (data.minPrice) {
+      filter.price = { [Op.gte]: data.minPrice };
     }
 
-    async getAllFlights(filter) {
-        try {
-            const filterobjects = this.#createFilter(filter);
-            const flights = await Flight.findAll({
-                where: filterobjects
-            });
-            return flights;
-        } catch (error) {
-            console.log("Error in getting all flights:", error);
-            throw { error };
-        }
+    if (data.maxPrice) {
+      filter.price = {
+        ...filter.price,
+        [Op.lte]: data.maxPrice,
+      };
     }
 
-    async updateFlight(flightId, data) {
-        try {
-            // Flight.update returns [numberOfAffectedRows, ...]
-            const [updatedRows] = await Flight.update(data, {
-                where: {
-                    id: flightId
-                }
-            });
+    return filter;
+  }
 
-            if (updatedRows === 0) {
-                throw new Error(`Flight with id ${flightId} not found or no changes applied.`);
-            }
-
-            return true;
-        } catch (error) {
-            console.error("Error updating flight:", error);
-            throw error;
-        }
+  // Create a new flight
+  async createFlight(data) {
+    try {
+      return await Flight.create(data);
+    } catch (error) {
+      console.error("Error creating flight:", error);
+      throw error;
     }
+  }
 
-    //   async getAirportsByCity(cityId) {
-    //     try {
-    //       const airports = await Airport.findAll({
-    //         where: { cityId: cityId },
-    //       });
-    //       return airports;
-    //     } catch (error) {
-    //       console.log("Error in fetching airports for city", error);
-    //       throw { error };
-    //     }
-    //   }
+  // Get flight by ID
+  async getFlight(flightId) {
+    try {
+      return await Flight.findByPk(flightId);
+    } catch (error) {
+      console.error("Error fetching flight:", error);
+      throw error;
+    }
+  }
+
+  // Get all flights with optional filters
+  async getAllFlights(filter) {
+    try {
+      const filterObjects = this.#createFilter(filter);
+      return await Flight.findAll({ where: filterObjects });
+    } catch (error) {
+      console.error("Error fetching flights:", error);
+      throw error;
+    }
+  }
+
+  // Update flight details
+  async updateFlight(flightId, data) {
+    try {
+      const [updatedRows] = await Flight.update(data, { where: { id: flightId } });
+
+      if (updatedRows === 0) {
+        throw new Error(`Flight with ID ${flightId} not found or no changes applied.`);
+      }
+
+      return true;
+    } catch (error) {
+      console.error("Error updating flight:", error);
+      throw error;
+    }
+  }
 }
 
 module.exports = FlightRepository;
-
-
