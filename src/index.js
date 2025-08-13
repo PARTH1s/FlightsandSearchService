@@ -1,31 +1,3 @@
-// const express = require("express");
-
-// const bodyParser = require("body-parser");
-
-// const { PORT } = require("./config/serverConfig");
-
-// const ApiRoutes = require("./routes/index");
-
-// const db = require("./models/index");
-
-// const SetUpandStartServer = async () => {
-//   // create the express object
-//   const app = express();
-
-//   app.use(bodyParser.json());
-//   app.use(bodyParser.urlencoded({ extended: true }));
-
-//   app.use("/api", ApiRoutes);
-
-//   app.listen(PORT, async () => {
-//     console.log(`Server Started at ${PORT}`);
-//     if (process.env.SYNC_DB) {
-//       db.sequelize.sync({ alter: true });
-//     }
-//   });
-// };
-
-// SetUpandStartServer();
 const express = require("express");
 const bodyParser = require("body-parser");
 const swaggerUi = require("swagger-ui-express");
@@ -35,7 +7,7 @@ const { PORT } = require("./config/serverConfig");
 const ApiRoutes = require("./routes/index");
 const db = require("./models/index");
 
-// Swagger definition and options
+// Swagger configuration
 const swaggerDefinition = {
   openapi: "3.0.0",
   info: {
@@ -52,17 +24,15 @@ const swaggerDefinition = {
 
 const options = {
   swaggerDefinition,
-  apis: ["./src/routes/v1/*.js"], 
+  apis: ["./src/routes/v1/*.js"],  
 };
 
-// Initialize swagger-jsdoc
 const swaggerSpec = swaggerJSDoc(options);
 
-const SetUpandStartServer = async () => {
-  // create the express object
+const SetUpAndStartServer = async () => {
   const app = express();
 
-  // Body parser middleware
+  // Middleware to parse request bodies
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -72,13 +42,15 @@ const SetUpandStartServer = async () => {
   // API routes
   app.use("/api", ApiRoutes);
 
-  // Start the server
+  // Start the server and optionally sync database
   app.listen(PORT, async () => {
-    console.log(`Server Started at ${PORT}`);
+    console.log(`Server started at http://localhost:${PORT}`);
     if (process.env.SYNC_DB) {
-      db.sequelize.sync({ alter: true });
+      await db.sequelize.sync({ alter: true });
+      console.log("Database synced successfully.");
     }
   });
 };
 
-SetUpandStartServer();
+// Initialize the server
+SetUpAndStartServer();
